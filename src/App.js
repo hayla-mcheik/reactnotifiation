@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Navbar from "./components/Navbar";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import VerifyCode  from "./pages/Auth/VerifyCode";
+import ApprovalRequest from "./pages/Auth/ApprovalRequest";
+import Dashboard from "./pages/Dashboard";
+
+
+import axios from 'axios'
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+// Now you can use csrfToken in your Axios request
+axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+
+// import pusher from './pusher'; 
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/approvalrequest/:token" element={<ApprovalRequest />} />
+          <Route path="/verify/email/:email" element={<VerifyCode />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
