@@ -49,8 +49,7 @@ function ApprovalRequest() {
         Swal.fire("warning", ApprovalResponse.data.message, "warning");
       }
       else {
-        setApproval({ ...approvalInput, error_list: ApprovalResponse.data.validation_errors });
-        
+        setApproval({ ...approvalInput, error_list: ApprovalResponse.data.validation_errors });      
       }
 
     } catch (error) {
