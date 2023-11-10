@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import url from '../url';
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../../components/Navbar";
 function Register() {
 
 
@@ -29,14 +30,11 @@ function Register() {
     };
 
     try {
-      // Get CSRF token
 
-  
-      // Register the user
       const registerResponse = await axios.post(`${url.baseURL}/register`, data);
 
       if (registerResponse.data.status === 200) {
-        // Handle successful registration
+
         localStorage.setItem('auth_token', registerResponse.data.token);
         localStorage.setItem('auth_name', registerResponse.data.username);
         Swal.fire('Success', registerResponse.data.message, 'success');
@@ -45,16 +43,23 @@ function Register() {
 
 
       } else {
-        // Handle registration validation errors
+
         setRegister({ ...registerInput, error_list: registerResponse.data.validation_errors });
       }
-    } catch (error) {
+
+    }
+
+
+
+
+     catch (error) {
       console.error('Registration failed:', error);
     }
   };
 
   return (
     <div>
+         <Navbar />
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-md-6">

@@ -11,5 +11,5 @@ window.Echo = new Echo({
     key: 'c92de035c19a321f7907',
     cluster: 'ap2',
     forceTLS: true,
-    encrypted: true, // Set to true if your server uses HTTPS
+    encrypted: true, 
 });

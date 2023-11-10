@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
 import url from '../url';
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from "../../components/Navbar";
 function VerifyCode() {
   const navigate = useNavigate();
   const { email } = useParams(); 
@@ -20,20 +20,23 @@ function VerifyCode() {
 
   const verificationcodeSubmit = async (e) => {
     e.preventDefault();
-  
     const data = {
       email: email,
       verification_code: verifycode.code,
     };
   
     try {
-      const verifyresponse = await axios.post(`${url.baseURL}/verification-code/${email}`, data);
-  
+      const verifyresponse = await axios.post(`${url.baseURL}/verification-code/${email}`, data); 
       if (verifyresponse.data.success) {
         if (verifyresponse.data.status === 'active') {
           console.log(verifyresponse.data);
           Swal.fire("You are verified and can log in", verifyresponse.data.message, "success");
-          navigate('/dashboard');
+
+          setTimeout(()=>{
+            const url = '/login';
+            window.location.href = url;
+          }, 1000);
+   
         } else {
           Swal.fire("You are not verified and cannot log in", verifyresponse.data.message, "warning");
         }
@@ -44,18 +47,16 @@ function VerifyCode() {
       console.error('Incorrect Code:', error);
     }
   }
-  
 
   return (
     <div>
+         <Navbar />
       <div className="container mt-5">
         <div className="row">
-          <div className="col-12 col-md-6">
-       
+          <div className="col-12 col-md-6">      
               <h6 >Verification Code</h6>
               <input type="text" name="code" className="form-control mb-2" onChange={handleInput} />
-              <button class="btn btn-primary" onClick={verificationcodeSubmit}>Submit</button>
-     
+              <button className="btn btn-primary" onClick={verificationcodeSubmit}>Submit</button>    
           </div>
         </div>
       </div>
