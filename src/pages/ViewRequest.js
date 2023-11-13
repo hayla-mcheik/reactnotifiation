@@ -18,6 +18,9 @@ function ViewRequest() {
   const [approvalRequests, setApprovalRequests] = useState([]);
   const [editingRequestId, setEditingRequestId] = useState(null);
   const [deletingRequestId, setDeletingRequestId] = useState(null);
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
+
+  
   const formatDateTime = (dateTimeString) => {
     const options = {
       month: 'short',
@@ -189,23 +192,25 @@ function ViewRequest() {
       console.error('Approval update failed:', error);
     }
   };
+
   const confirmDelete = (requestId) => {
     setDeletingRequestId(requestId);
-    // Show your delete confirmation modal here, e.g., by toggling a modal state
+    setDeleteModalVisibility(true);
   };
+
   const handleDelete = async () => {
     try {
       const headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
       };
-  
+
       const deleteResponse = await axios.delete(`${url.baseURL}/delete-pending-request/${deletingRequestId}`, { headers });
-  
+
       if (deleteResponse.data.status === 200) {
         // Fetch the updated approval requests after successful deletion
         await fetchApprovalRequests();
-  
+
         closeModal();
         console.log(deleteResponse.data.message);
       } else {
@@ -214,10 +219,12 @@ function ViewRequest() {
     } catch (error) {
       console.error('Delete request failed:', error);
     } finally {
-      // Reset the deletingRequestId
+      // Reset the deletingRequestId and hide the delete modal
       setDeletingRequestId(null);
+      setDeleteModalVisibility(false);
     }
   };
+
   
   
   
@@ -328,24 +335,24 @@ function ViewRequest() {
 
 
 
-        <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  {/* Delete Modal */}
+  <div className={`modal fade ${isDeleteModalVisible ? 'show' : ''}`} id="deleteModal" tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden={!isDeleteModalVisible}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setDeleteModalVisibility(false)}></button>
+            </div>
+            <div className="modal-body">
+              Are you sure you want to delete this request?
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setDeleteModalVisibility(false)}>Cancel</button>
+              <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="modal-body">
-        Are you sure you want to delete this request?
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" className="btn btn-danger"  onClick={handleDelete}>Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
         <div className="mt-5">
