@@ -5,7 +5,9 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import VerifyCode from "./pages/Auth/VerifyCode";
 import Dashboard from "./pages/Dashboard";
+import ViewRequest from "./pages/ViewRequest";
 import Home from "./pages/Home";
+import Layout from './components/Layout';
 import {useLocation } from "react-router-dom";
 import axios from 'axios';
 
@@ -30,7 +32,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+        <Route path="/layout/*" element={<Layout />} />
+        <Route index element={<Home />} />
           <Route
             path="/login"
             element={
@@ -60,7 +63,7 @@ function App() {
             }
           />
 
-
+<Route path="/viewrequest" element={<ViewRequest />} />
           
         </Routes>
       </BrowserRouter>
