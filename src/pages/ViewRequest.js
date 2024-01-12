@@ -364,54 +364,53 @@ function ViewRequest() {
           </div>
 
           <div className="table-responsive">
-            <table className="table mt-5">
-              <thead className="thead-dark">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Reason</th>
-                  <th scope="col">Days</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-              {approvalRequests.map((request, index) => (
-  <tr key={index}>
-    <th scope="row">{index + 1}</th>
-    <td>{request.reqapproval}</td>
-    <td>{request.reqdays}</td>
-    <td>{request.status}</td>
-    <td>
-      {request.status.toLowerCase() === 'pending' && (
-        <>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#editModal"
-            onClick={() => handleEdit(request.id)}
-          >
-            Edit
-          </button>
+          <table className="table mt-5">
+  <thead className="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Reason</th>
+      <th scope="col">Days</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {approvalRequests.map((request, index) => (
+      <tr key={index}>
+        <th scope="row">{index + 1}</th>
+        <td>{request.reqapproval}</td>
+        <td>{request.reqdays}</td>
+        <td>{request.status}</td>
+        <td>
+          {request.status.toLowerCase() === 'pending' && (
+            <>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal"
+                onClick={() => handleEdit(request.id)}
+              >
+                Edit
+              </button>
 
-          <button
-            type="button"
-            className="btn btn-primary mx-2"
-            data-bs-toggle="modal"
-            data-bs-target="#deleteModal"
-            onClick={() => confirmDelete(request.id)}
-          >
-            Delete
-          </button>
-        </>
-      )}
-    </td>
-  </tr>
-))}
+              <button
+                type="button"
+                className="btn btn-primary mx-2"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                onClick={() => confirmDelete(request.id)}
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
